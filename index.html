@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinWise AI — Premium Personal Finance Planner</title>
+  
+  <!-- Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tabler Icons CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  
+  <!-- External CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+
+  <div class="layout-container">
+    
+    <!-- Collapsible Premium Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div class="brand-logo" aria-hidden="true">
+          <i class="ti ti-chart-pie"></i>
+        </div>
+        <div>
+          <div class="brand-title">FinWise AI</div>
+          <div class="brand-subtitle">Smart Wealth</div>
+        </div>
+      </div>
+      
+      <nav class="nav-menu">
+        <button class="nav-btn active" onclick="showSection('dashboard')" id="nav-btn-dashboard">
+          <i class="ti ti-dashboard" aria-hidden="true"></i> <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('expenses')" id="nav-btn-expenses">
+          <i class="ti ti-receipt" aria-hidden="true"></i> <span>Expenses</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('goals')" id="nav-btn-goals">
+          <i class="ti ti-target-arrow" aria-hidden="true"></i> <span>Goals</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('ai')" id="nav-btn-ai">
+          <i class="ti ti-sparkles" aria-hidden="true"></i> <span>AI Advisor</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('settings')" id="nav-btn-settings">
+          <i class="ti ti-adjustments" aria-hidden="true"></i> <span>Setup</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-profile-widget">
+          <div class="user-avatar" id="avatar-letter">F</div>
+          <div>
+            <div class="user-name" id="profile-greet-name">Friend</div>
+          </div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark/Light Mode">
+          <i class="ti ti-sun" id="theme-icon"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Bottom Navigation (Visible only on responsive screens) -->
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      <ul class="mobile-nav-menu">
+        <li>
+          <button class="mobile-nav-btn active" onclick="showSection('dashboard')" id="mobile-btn-dashboard">
+            <i class="ti ti-dashboard" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" onclick="showSection('expenses')" id="mobile-btn-expenses">
+            <i class="ti ti-receipt" aria-hidden="true"></i>
+            <span>Expenses</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" onclick="showSection('goals')" id="mobile-btn-goals">
+            <i class="ti ti-target-arrow" aria-hidden="true"></i>
+            <span>Goals</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" onclick="showSection('ai')" id="mobile-btn-ai">
+            <i class="ti ti-sparkles" aria-hidden="true"></i>
+            <span>AI Advisor</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" onclick="showSection('settings')" id="mobile-btn-settings">
+            <i class="ti ti-adjustments" aria-hidden="true"></i>
+            <span>Setup</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Workspace Container -->
+    <main class="main-content">
+      
+      <!-- Top header layout -->
+      <header class="content-header">
+        <div class="page-title-section">
+          <h1 id="page-display-title">Dashboard</h1>
+          <p id="page-display-desc">Welcome back to FinWise AI planner dashboard.</p>
+        </div>
+        <div class="header-actions">
+          <div class="badge-date" id="header-date">
+            <i class="ti ti-calendar"></i>
+            <span id="header-month-badge">May 2026</span>
+          </div>
+          <button class="theme-toggle" style="display:none;" id="mobile-theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+            <i class="ti ti-sun"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- SECTION: DASHBOARD -->
+      <div class="section active" id="section-dashboard">
+        <!-- Live Synchronized Stats Cards -->
+        <div class="metric-grid" id="metric-grid"></div>
+
+        <div class="dashboard-grid">
+          <!-- Charts and Analytics cards -->
+          <div class="dashboard-left">
+            <div class="chart-container-row">
+              <div class="card">
+                <div class="card-title"><i class="ti ti-chart-bar" aria-hidden="true"></i> Spending Breakdown</div>
+                <div class="chart-wrap">
+                  <canvas id="spendChart" role="img" aria-label="Monthly spending category bar chart"></canvas>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-title"><i class="ti ti-chart-area-line" aria-hidden="true"></i> Savings Trend (6 mo)</div>
+                <div class="chart-wrap">
+                  <canvas id="savingsChart" role="img" aria-label="Savings growth line chart"></canvas>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card" style="margin-bottom:0;">
+              <div class="card-title"><i class="ti ti-bell-ringing" aria-hidden="true"></i> Smart Financial Alerts</div>
+              <div class="alerts-list-container" id="alerts-list"></div>
+            </div>
+          </div>
+
+          <!-- Goal Summary sidebar element -->
+          <div class="dashboard-right">
+            <div class="card" style="height:100%;">
+              <div class="card-title"><i class="ti ti-chart-donut-filled" aria-hidden="true"></i> Goals Progress Overview</div>
+              <div class="chart-wrap-lg" style="margin-bottom: 1.5rem;">
+                <canvas id="goalChart" role="img" aria-label="Doughnut savings goals chart"></canvas>
+              </div>
+              <div id="dashboard-goals-mini"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: EXPENSES -->
+      <div class="section" id="section-expenses">
+        <div class="dashboard-grid" style="grid-template-columns: 2fr 3fr;">
+          <!-- Left Col: Form -->
+          <div class="card">
+            <div class="card-title"><i class="ti ti-circle-plus" aria-hidden="true"></i> Record New Expense</div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label for="exp-name">Description</label>
+              <input type="text" id="exp-name" placeholder="e.g. Grocery shopping at supermart">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="exp-amount">Amount (₹)</label>
+                <input type="number" id="exp-amount" placeholder="0">
+              </div>
+              <div class="form-group">
+                <label for="exp-cat">Category</label>
+                <select id="exp-cat">
+                  <option value="food">Food & Dining</option>
+                  <option value="transport">Transport</option>
+                  <option value="bills">Bills & Utilities</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="health">Health</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:20px;">
+              <label for="exp-date">Date</label>
+              <input type="date" id="exp-date">
+            </div>
+            <button class="btn btn-primary" onclick="addExpense()" style="width:100%;">
+              <i class="ti ti-plus" aria-hidden="true"></i> Add Expense
+            </button>
+          </div>
+
+          <!-- Right Col: Filterable Scroll List -->
+          <div class="card" style="display:flex; flex-direction:column; height:500px;">
+            <div class="card-title" style="margin-bottom: 1rem;"><i class="ti ti-receipt-tax" aria-hidden="true"></i> Transaction Ledger</div>
+            
+            <div class="expense-controls">
+              <div class="search-input-wrap">
+                <i class="ti ti-search"></i>
+                <input type="text" id="expense-search" placeholder="Search transactions..." onkeyup="filterExpenses()">
+              </div>
+            </div>
+            
+            <div class="filter-pills" id="filter-pills-list">
+              <!-- Dynamically populated pills -->
+            </div>
+            
+            <div class="expense-list-container" id="expense-list" style="flex:1;">
+              <!-- Javascript populates -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: GOALS -->
+      <div class="section" id="section-goals">
+        <div class="dashboard-grid" style="grid-template-columns: 2fr 3fr;">
+          <!-- Left: Add Goals -->
+          <div class="card">
+            <div class="card-title"><i class="ti ti-pig-money" aria-hidden="true"></i> Define New Savings Goal</div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label for="goal-name">Goal Name</label>
+              <input type="text" id="goal-name" placeholder="e.g. Dream Electric Vehicle">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="goal-target">Target Target (₹)</label>
+                <input type="number" id="goal-target" placeholder="0">
+              </div>
+              <div class="form-group">
+                <label for="goal-saved">Already Saved (₹)</label>
+                <input type="number" id="goal-saved" placeholder="0">
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:20px;">
+              <label for="goal-date">Target Goal Completion Date</label>
+              <input type="date" id="goal-date">
+            </div>
+            <button class="btn btn-primary" onclick="addGoal()" style="width:100%;">
+              <i class="ti ti-target" aria-hidden="true"></i> Initiate Goal
+            </button>
+          </div>
+
+          <!-- Right: Visual Cards -->
+          <div class="card">
+            <div class="card-title"><i class="ti ti-track" aria-hidden="true"></i> Savings Goals Progress</div>
+            <div id="goals-list" style="max-height:430px; overflow-y:auto; padding-right:6px;">
+              <!-- Populated dynamic list -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: AI ADVISOR (Sleek Chatbot Overlay) -->
+      <div class="section" id="section-ai">
+        <div class="ai-dashboard-wrap">
+          <!-- Chat box area -->
+          <div class="card ai-chat-card">
+            <div class="chat-header">
+              <div class="chat-agent-info">
+                <div class="chat-agent-avatar" aria-hidden="true">
+                  <i class="ti ti-cpu"></i>
+                </div>
+                <div class="chat-agent-details">
+                  <span class="chat-agent-name">FinWise Financial AI</span>
+                  <span class="chat-agent-status">Online Advisor</span>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-danger" onclick="clearChat()" style="padding:6px; border-radius:8px;" aria-label="Clear chat log">
+                <i class="ti ti-trash-x"></i>
+              </button>
+            </div>
+
+            <!-- Chat scroll area -->
+            <div class="chat-body" id="ai-chat-body">
+              <!-- Initial Welcome Message -->
+              <div class="chat-bubble bot">
+                Hi <span class="ai-bot-user-name">Friend</span>! I am your <strong>FinWise AI</strong> financial planner advisor. 
+                I have analyzed your profiles and real-time transaction balances.
+                <br><br>
+                What would you like me to analyze for you today? You can choose one of the quick suggestions below or write your own custom queries!
+              </div>
+            </div>
+
+            <!-- Predefined AI triggers -->
+            <div class="chat-quick-suggestions" id="ai-quick-suggs">
+              <button class="suggestion-chip" onclick="submitChatPrompt('Analyze my spending habits and suggest a better budget plan for me')">
+                📈 Analyze my spending
+              </button>
+              <button class="suggestion-chip" onclick="submitChatPrompt('What are the best investment options for someone saving ₹10,000 per month in India?')">
+                💼 Indian investment options
+              </button>
+              <button class="suggestion-chip" onclick="submitChatPrompt('Help me create a 6-month plan to save ₹1 lakh emergency fund')">
+                🛡️ Save 1 Lakh Emergency Fund Plan
+              </button>
+            </div>
+
+            <!-- Interactive Chat input -->
+            <div class="chat-input-row">
+              <div class="chat-input-container">
+                <input type="text" id="ai-user-input" placeholder="Type custom query (e.g. 'How can I save ₹5000 more?')...." onkeydown="if(event.key==='Enter') sendChatFromInput()">
+                <button class="chat-send-btn" onclick="sendChatFromInput()" aria-label="Send message">
+                  <i class="ti ti-send-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Circular health scores -->
+          <div class="card ai-health-meter-card">
+            <div class="card-title" style="margin-bottom:0.5rem;"><i class="ti ti-activity-heartbeat" aria-hidden="true"></i> Financial Health Score</div>
+            
+            <div class="score-circle-container">
+              <svg class="score-circle-svg">
+                <circle class="score-circle-bg" cx="70" cy="70" r="60"></circle>
+                <circle class="score-circle-fill" id="health-circle-svg-fill" cx="70" cy="70" r="60"></circle>
+              </svg>
+              <div class="score-center-text">
+                <div id="health-score-val">--</div>
+                <div class="score-center-subtext" id="health-score-lbl">Calculating</div>
+              </div>
+            </div>
+
+            <div class="health-stats-footer">
+              <div class="health-stat-row">
+                <span class="health-stat-label">Daily Budget Status</span>
+                <span class="health-stat-val" id="health-meter-status-txt">Evaluating...</span>
+              </div>
+              <div class="progress-bar-fancy" style="height:6px;">
+                <div class="progress-bar-fancy-fill" id="health-meter-mini-progress" style="width:0%;"></div>
+              </div>
+              <div style="font-size:12px; color:var(--text-tertiary); line-height:1.4; text-align:center; padding-top:4px;">
+                Your health score is evaluated automatically using dynamic surplus ratios, savings rate achievements, and budget variances.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: SETUP SETTINGS -->
+      <div class="section" id="section-settings">
+        <div class="dashboard-grid">
+          <!-- Form Profile -->
+          <div class="card">
+            <div class="card-title"><i class="ti ti-user-edit" aria-hidden="true"></i> Financial Identity Setup</div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="set-name">Profile Display Name</label>
+                <input type="text" id="set-name" placeholder="Your name">
+              </div>
+              <div class="form-group">
+                <label for="set-style">Budget Style Methodology</label>
+                <select id="set-style" onchange="updateAllocationPie()">
+                  <option value="50-30-20">50/30/20 Rule</option>
+                  <option value="80-20">80/20 Savings Rules</option>
+                  <option value="envelope">Envelope Method</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="set-income">Monthly Liquid Income (₹)</label>
+                <input type="number" id="set-income" placeholder="60000">
+              </div>
+              <div class="form-group">
+                <label for="set-savings">Target Savings Target (₹)</label>
+                <input type="number" id="set-savings" placeholder="12000">
+              </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="saveProfile()" style="margin-top:10px;">
+              <i class="ti ti-check" aria-hidden="true"></i> Synchronize Financial Profile
+            </button>
+          </div>
+
+          <!-- Budget Allocation Pie Chart -->
+          <div class="card">
+            <div class="card-title"><i class="ti ti-chart-pie-2" aria-hidden="true"></i> Methodology Asset Allocation</div>
+            <div class="chart-wrap" style="height:210px; margin-bottom:1rem;">
+              <canvas id="budgetChart" role="img" aria-label="Methodology allocation pie chart"></canvas>
+            </div>
+            <div style="font-size:12px; color:var(--text-tertiary); line-height:1.4; text-align:center;">
+              Applying allocation frameworks helps classify standard limits. The pie reflects theoretical guides using your adjusted monthly income value.
+            </div>
+          </div>
+
+          <!-- Card 3: Data & Storage Management (JSON file backups & LocalStorage info) -->
+          <div class="card">
+            <div class="card-title"><i class="ti ti-database-cog" aria-hidden="true"></i> Backup & Data Management</div>
+            <div style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              Your profile settings, transactions ledger, and wealth goals are automatically synchronized inside your browser's persistent local storage. 
+              <br><br>
+              To safeguard your data or move it to another computer, download a physical record file below or load an existing backup file.
+            </div>
+            
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1.5rem;">
+              <button class="btn btn-primary" onclick="exportDataToFile()">
+                <i class="ti ti-download" aria-hidden="true"></i> Download Backup File
+              </button>
+              <button class="btn btn-danger" onclick="resetDataToDefault()">
+                <i class="ti ti-rotate-dot" aria-hidden="true"></i> Reset All Data
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label for="import-file" style="margin-bottom:4px;">Restore Data from File</label>
+              <input type="file" id="import-file" accept=".json" onchange="importDataFromFile(event)" style="cursor: pointer; padding: 8px 12px; font-size: 13px;">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast" id="toast" role="alert" aria-live="polite">
+    <i class="ti ti-info-circle toast-icon" id="toast-icon"></i>
+    <span class="toast-text" id="toast-message">Message goes here</span>
+  </div>
+
+  <!-- ChartJS CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+  <!-- External JS Script -->
+  <script src="app.js" defer></script>
+
+</body>
+</html>
